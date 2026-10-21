@@ -1,10 +1,11 @@
 package ma.eventpro.repository;
 
+import ma.eventpro.entity.CategorieBillet;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CategorieBillet extends JpaRepository<CategorieBillet , Long> {
+public interface CategorieBilletRepository extends JpaRepository<CategorieBillet, Long> {
     List<CategorieBillet> findByEvenementId(Long evenementId);
-    boolean existsByEvenementName(String name);
+    boolean existsByEvenementTitle(String title);
 }

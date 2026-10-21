@@ -48,7 +48,7 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LigneReservation> lines = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reservation")
-    private List<Paiement> payments = new ArrayList<>();
+    @OneToOne(mappedBy = "reservation", fetch = FetchType.LAZY)
+    private Paiement paiement;
 
 }

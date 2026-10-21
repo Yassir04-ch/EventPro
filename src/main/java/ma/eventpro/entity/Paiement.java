@@ -34,8 +34,8 @@ public class Paiement {
     @Column(nullable = false)
     private PaymentStatus status = PaymentStatus.PENDING;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "reservation_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "reservation_id", nullable = false, unique = true)
     private Reservation reservation;
 
     @OneToMany(mappedBy = "payment")

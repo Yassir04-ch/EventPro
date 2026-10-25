@@ -28,7 +28,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class EventService {
     private final EvenementRepostory evenementRepostory;
-    private final CategorieBilletRepository categorieBilletRepository;
     private final OrganisateurRepository organisateurRepository;
     private final EvenementMapper evenementMapper;
 

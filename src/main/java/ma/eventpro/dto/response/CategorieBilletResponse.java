@@ -1,14 +1,12 @@
-package ma.eventpro.dto.responce;
+package ma.eventpro.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ma.eventpro.entity.Evenement;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Getter
 @Setter

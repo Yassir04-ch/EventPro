@@ -1,4 +1,4 @@
-package ma.eventpro.dto.responce;
+package ma.eventpro.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

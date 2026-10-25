@@ -6,7 +6,7 @@ import ma.eventpro.dto.request.AdministrateurCreateRequest;
 import ma.eventpro.dto.request.AgentControleCreateRequest;
 import ma.eventpro.dto.request.ClientCreateRequest;
 import ma.eventpro.dto.request.OrganisateurCreateRequest;
-import ma.eventpro.dto.responce.UtilisateurResponse;
+import ma.eventpro.dto.response.UtilisateurResponse;
 import ma.eventpro.service.UtilisateurService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;

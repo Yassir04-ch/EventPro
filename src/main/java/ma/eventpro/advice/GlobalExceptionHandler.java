@@ -2,10 +2,11 @@ package ma.eventpro.advice;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import ma.eventpro.dto.responce.ErrorResponse;
+import ma.eventpro.dto.response.ErrorResponse;
 import ma.eventpro.exception.ConflictException;
 import ma.eventpro.exception.ValidationException;
 import ma.eventpro.exception.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,4 +46,5 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(status).body(body);
     }
+
 }

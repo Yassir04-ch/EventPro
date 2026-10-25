@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "categories_billets")
+@Table(name = "categories_billets",
+        uniqueConstraints = {@UniqueConstraint(name = "uk_categorie_event_name", columnNames = {"evenement_id", "name"})
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,7 +21,7 @@ public class CategorieBillet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

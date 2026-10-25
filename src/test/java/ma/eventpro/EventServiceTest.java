@@ -1,7 +1,7 @@
 package ma.eventpro;
 
 import ma.eventpro.dto.request.EventCreateRequest;
-import ma.eventpro.dto.responce.EvenementResponse;
+import ma.eventpro.dto.response.EvenementResponse;
 import ma.eventpro.entity.Evenement;
 import ma.eventpro.entity.Organisateur;
 import ma.eventpro.entity.enums.EventStatus;

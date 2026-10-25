@@ -1,11 +1,10 @@
 package ma.eventpro.service;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import ma.eventpro.dto.request.CategorieBilletRequest;
 import ma.eventpro.dto.request.EventCreateRequest;
-import ma.eventpro.dto.responce.EvenementResponse;
+import ma.eventpro.dto.response.EvenementResponse;
 import ma.eventpro.entity.Evenement;
 import ma.eventpro.entity.Organisateur;
 import ma.eventpro.entity.enums.EventStatus;
@@ -14,6 +13,7 @@ import ma.eventpro.exception.EventNotFound;
 import ma.eventpro.exception.OrganisateurNotFound;
 import ma.eventpro.exception.ValidationException;
 import ma.eventpro.mapper.EvenementMapper;
+import ma.eventpro.repository.CategorieBilletRepository;
 import ma.eventpro.repository.EvenementRepostory;
 import ma.eventpro.repository.OrganisateurRepository;
 import org.springframework.stereotype.Service;
@@ -21,12 +21,14 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class EventService {
     private final EvenementRepostory evenementRepostory;
+    private final CategorieBilletRepository categorieBilletRepository;
     private final OrganisateurRepository organisateurRepository;
     private final EvenementMapper evenementMapper;
 
@@ -40,6 +42,10 @@ public class EventService {
 
         Evenement evenement = evenementMapper.toEntity(request);
         evenement.setOrganisateur(organisateur);
+        if(evenement.getCategories() != null){
+            evenement.getCategories().forEach(c ->
+                    c.setEvenement(evenement));
+        }
         return evenementMapper.toResponse(evenementRepostory.save(evenement));
     }
 
@@ -112,11 +118,13 @@ public class EventService {
 
     private void validateCategories(List<CategorieBilletRequest> categories) {
         Set<String> names = new HashSet<>();
-        for (CategorieBilletRequest c : categories) {
-            if (!names.add(c.getName().trim().toLowerCase())) {
-                throw new ValidationException("Catégorie en double: " + c.getName());
+        for (CategorieBilletRequest categorie : categories) {
+            String name = categorie.getName().trim();
+            String normalizedName = name.toLowerCase(Locale.ROOT);
+            if (!names.add(normalizedName)) {
+                throw new ConflictException("La catégorie :" + name + " existe déja dans cet événement.");
             }
+            categorie.setName(name);
         }
     }
-
 }

@@ -1,7 +1,7 @@
 package ma.eventpro.mapper;
 
 import ma.eventpro.dto.request.CategorieBilletRequest;
-import ma.eventpro.dto.responce.CategorieBilletResponse;
+import ma.eventpro.dto.response.CategorieBilletResponse;
 import ma.eventpro.entity.CategorieBillet;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

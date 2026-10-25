@@ -5,7 +5,7 @@ import ma.eventpro.dto.request.AdministrateurCreateRequest;
 import ma.eventpro.dto.request.AgentControleCreateRequest;
 import ma.eventpro.dto.request.ClientCreateRequest;
 import ma.eventpro.dto.request.OrganisateurCreateRequest;
-import ma.eventpro.dto.responce.UtilisateurResponse;
+import ma.eventpro.dto.response.UtilisateurResponse;
 import ma.eventpro.entity.Administrateur;
 import ma.eventpro.entity.AgentControle;
 import ma.eventpro.entity.Client;

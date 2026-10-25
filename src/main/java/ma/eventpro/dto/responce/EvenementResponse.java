@@ -8,7 +8,6 @@ import lombok.Setter;
 import ma.eventpro.entity.enums.EventStatus;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class EvenementResponse {
-    private UUID id;
+    private Long id;
     private String title;
     private String description;
     private String location;

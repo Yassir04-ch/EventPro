@@ -16,10 +16,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class CategorieBilletResponse {
-    private UUID id;
+    private Long id;
     private String name;
     private BigDecimal prixUnitaire;
     private Integer quantiteTotale;
     private Integer quotaMaxParClient;
-    private Integer placesDisponibles;
+    private Integer placesReservees;
 }

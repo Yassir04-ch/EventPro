@@ -36,7 +36,7 @@ public class UtilisateurServiceTest {
     @Test
     void createClient(){
         ClientCreateRequest request = ClientCreateRequest.builder()
-                .name("yassir")
+                .nom("yassir")
                 .email("yassir@gmail.com")
                 .phone("0612345678")
                 .build();
@@ -53,7 +53,7 @@ public class UtilisateurServiceTest {
 
         UtilisateurResponse response = UtilisateurResponse.builder()
                 .id(id)
-                .name("yassir")
+                .nom("yassir")
                 .email("yassir@gmail.com")
                 .role("CLIENT")
                 .build();
@@ -74,7 +74,7 @@ public class UtilisateurServiceTest {
     @Test
     void createClientConflictException() {
         ClientCreateRequest request = ClientCreateRequest.builder()
-                .name("yassir")
+                .nom("yassir")
                 .email("yassir@gmail.com")
                 .build();
         when(userRepository.existsByEmail("yassir@gmail.com")).thenReturn(true);
@@ -85,7 +85,7 @@ public class UtilisateurServiceTest {
     @Test
     void createOrganisateur(){
         OrganisateurCreateRequest request = OrganisateurCreateRequest.builder()
-                .name("yassir")
+                .nom("yassir")
                 .email("yassir@gmail.com")
                 .organisationName("organisateurName")
                 .build();
@@ -105,7 +105,7 @@ public class UtilisateurServiceTest {
 
         UtilisateurResponse response = UtilisateurResponse.builder()
                 .id(id)
-                .name("yassir")
+                .nom("yassir")
                 .email("yassir@gmail.com")
                 .organisationName("organisateurName")
                 .role("ORGANISATEUR")
@@ -126,7 +126,7 @@ public class UtilisateurServiceTest {
     @Test
     void createAdministrateurConflictException() {
         OrganisateurCreateRequest request = OrganisateurCreateRequest.builder()
-                .name("yassir")
+                .nom("yassir")
                 .email("yassir@gmail.com")
                 .build();
         when(userRepository.existsByEmail("yassir@gmail.com")).thenReturn(true);
@@ -137,7 +137,7 @@ public class UtilisateurServiceTest {
     @Test
     void createAdmin(){
         AdministrateurCreateRequest request = AdministrateurCreateRequest.builder()
-                .name("yassir")
+                .nom("yassir")
                 .email("yassir@gmail.com")
                 .build();
 
@@ -154,7 +154,7 @@ public class UtilisateurServiceTest {
 
         UtilisateurResponse response = UtilisateurResponse.builder()
                 .id(id)
-                .name("yassir")
+                .nom("yassir")
                 .email("yassir@gmail.com")
                 .organisationName("organisateurName")
                 .role("ADMINISTRATEUR")

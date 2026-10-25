@@ -25,7 +25,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: yassir@gmail.com
       PGADMIN_DEFAULT_PASSWORD: yassir123
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       postgres:
         condition: service_healthy

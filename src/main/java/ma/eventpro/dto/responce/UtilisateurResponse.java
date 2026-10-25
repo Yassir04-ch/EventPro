@@ -17,7 +17,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UtilisateurResponse {
     private UUID id;
-    private String name;
+    private String nom;
     private String email;
     private String role;
     private String phone;

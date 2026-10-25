@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public abstract  class UtilisateurCreateRequest {
     @NotBlank(message = "Le nom est obligatoire")
-    private String name;
+    private String nom;
 
     @NotBlank(message = "L'email est obligatoire")
     @Email(message = "Email invalide")

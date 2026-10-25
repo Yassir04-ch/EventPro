@@ -124,12 +124,15 @@ public class EventServiceTest {
 
     @Test
     void getPublishedEvents() {
-        List<Evenement> events = List.of(evenement);
-        when(evenementRepostory.findByStatus(EventStatus.PUBLISHED)).thenReturn(events);
-        List<Evenement> result = eventService.getPublishedEvents();
+        when(evenementRepostory.findByStatus(EventStatus.PUBLISHED)).thenReturn(List.of(evenement));
+        when(evenementMapper.toResponse(evenement)).thenReturn(response);
+
+        List<EvenementResponse> result = eventService.getPublishedEvents();
+
         assertEquals(1, result.size());
-        assertSame(evenement, result.get(0));
+        assertSame(response, result.get(0));
         verify(evenementRepostory).findByStatus(EventStatus.PUBLISHED);
+        verify(evenementMapper).toResponse(evenement);
     }
 
     @Test

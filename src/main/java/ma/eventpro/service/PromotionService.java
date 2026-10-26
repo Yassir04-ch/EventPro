@@ -33,7 +33,7 @@ public class PromotionService {
     @Transactional
     public PromotionResponse createPromotion(PromotionCreateRequest request){
         if (request.getEndDate().isBefore(request.getStartDate())) {
-            throw new ValidationException("La date de fin doit être après la date de début");
+            throw new ValidationException("date de fin doit étre après la date de début");
         }
         String code = request.getCode().trim();
         if (promotionRepository.existsByCode(code)) {

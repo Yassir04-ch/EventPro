@@ -22,5 +22,4 @@ public class Client extends User {
 
     @OneToMany(mappedBy = "client")
     private List<Reservation> reservations = new ArrayList<>();
-
 }

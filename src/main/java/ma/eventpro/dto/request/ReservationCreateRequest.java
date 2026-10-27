@@ -22,5 +22,5 @@ public class ReservationCreateRequest {
     private  String promoCode;
 
     @NotEmpty(message = "réservation doit contenir au moins une ligne")
-    private List<LigneReservation> linesreserv;
+    private List<LigneReservationRequest> linesreserv;
 }

@@ -61,7 +61,6 @@ public class PromotionService {
     public Promotion validatePromotion(String code, Long evenementId) {
         Promotion promotion = promotionRepository.findByCode(code).
                 orElseThrow(()->new PromotionNotFound("Promotion Not Found"));
-
         if (!isValid(promotion)) {
             throw new ValidationException("Code promo expiré ou limite d'utilisation atteinte");
         }

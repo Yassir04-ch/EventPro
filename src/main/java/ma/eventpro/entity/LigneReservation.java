@@ -39,5 +39,4 @@ public class LigneReservation {
     @OneToMany(mappedBy = "lineReservation", cascade = CascadeType.ALL)
     private List<Billet> billets = new ArrayList<>();
 
-
 }

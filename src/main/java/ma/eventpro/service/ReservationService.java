@@ -9,10 +9,7 @@ import ma.eventpro.entity.*;
 import ma.eventpro.entity.enums.DiscountType;
 import ma.eventpro.entity.enums.EventStatus;
 import ma.eventpro.entity.enums.ReservationStatus;
-import ma.eventpro.exception.ClientNotFound;
-import ma.eventpro.exception.ConflictException;
-import ma.eventpro.exception.ResourceNotFoundException;
-import ma.eventpro.exception.ValidationException;
+import ma.eventpro.exception.*;
 import ma.eventpro.mapper.ReservationMapper;
 import ma.eventpro.repository.CategorieBilletRepository;
 import ma.eventpro.repository.ClientRepository;
@@ -79,7 +76,6 @@ public class ReservationService {
         return reservationMapper.toResponse(reservationRepository.save(reservation));
     }
 
-
     public List<LigneReservationRequest> sortAndEviteDuplicate(List<LigneReservationRequest> lignes) {
         Set<Long> seen = new HashSet<>();
         for (LigneReservationRequest ligne : lignes) {
@@ -89,7 +85,6 @@ public class ReservationService {
         }
         return lignes.stream().sorted(Comparator.comparing(LigneReservationRequest::getCategorieBilletId)).toList();
     }
-
 
     private Long validateCategoryAndEvent(CategorieBillet categorie, Long evenementId) {
         Evenement evenement = categorie.getEvenement();
@@ -110,9 +105,8 @@ public class ReservationService {
         if(quantity > avaibility){
             throw new  ConflictException("Quantity invalide dans categorie " + categorie.getName() + "places disponible est" + avaibility);
         }
-
-        int total = ligneReservationRepository.sumQuantityByClientAndCategorie(client.getId(),categorie.getId());
-        if(total > categorie.getQuotaMaxParClient()){
+        Long total = ligneReservationRepository.sumQuantityByClientAndCategorie(client.getId(),categorie.getId());
+        if(total + quantity > categorie.getQuotaMaxParClient()){
             throw new ConflictException("Quota maximum dépassé pour la catégorie: " + categorie.getName());
         }
     }
@@ -144,6 +138,36 @@ public class ReservationService {
             discount = subtotal;
         }
         return discount;
+    }
+
+    @Transactional
+    public ReservationResponse cancelReservation(Long id){
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
+        returnReservedPlaces(reservation);
+        reservation.setStatus(ReservationStatus.CANCELED);
+        return reservationMapper.toResponse(reservation);
+    }
+
+    private void returnReservedPlaces(Reservation reservation){
+        for(LigneReservation ligne : reservation.getLines()){
+            Long categorieId = ligne.getCategorieBillet().getId();
+
+            CategorieBillet categorieBillet = categorieBilletRepository.findById(categorieId)
+                    .orElseThrow(() -> new CategorieNotFound("CategorieBillet Not Found"));
+            categorieBillet.setPlacesReservees(categorieBillet.getPlacesReservees() - ligne.getQuantity());
+        }
+        Promotion promotion = reservation.getPromotion();
+        if(promotion != null){
+            promotion.setUsageCount(promotion.getUsageCount() - 1);
+        }
+    }
+
+    @Transactional
+    public ReservationResponse getById(Long id){
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Reservation Not Found"));
+        return reservationMapper.toResponse(reservation);
     }
 
 

@@ -170,5 +170,15 @@ public class ReservationService {
         return reservationMapper.toResponse(reservation);
     }
 
+    @Transactional
+    public void expireReservations(){
+        Instant now = Instant.now();
+        List<Reservation> listReservation = reservationRepository.findByStatusAndExpirationDateLessThanEqual(ReservationStatus.PENDING_PAYMENT , now);
+        for(Reservation reservation : listReservation){
+            reservation.setStatus(ReservationStatus.EXPIRED);
+            returnReservedPlaces(reservation);
+        }
+    }
+
 
 }

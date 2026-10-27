@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class LigneReservationResponse {
     private Long id ;
     private  Integer quantity;

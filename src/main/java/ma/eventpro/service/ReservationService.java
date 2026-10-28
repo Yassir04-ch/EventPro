@@ -59,9 +59,7 @@ public class ReservationService {
                     .orElseThrow(() -> new ResourceNotFoundException("Catégorie de billet introuvable"));
             evenementId = validateCategoryAndEvent(categorie, evenementId);
             validateDisponibles(client, categorie, lineReq.getQuantity());
-
             categorie.setPlacesReservees(categorie.getPlacesReservees() + lineReq.getQuantity());
-
             LigneReservation line = createReservationLine(lineReq, categorie, reservation);
             subtotal = subtotal.add(line.getSubtotal());
         }

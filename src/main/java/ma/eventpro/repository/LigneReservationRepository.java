@@ -20,5 +20,8 @@ public interface LigneReservationRepository extends JpaRepository<LigneReservati
         WHERE l.reservation.client.id = :clientId
           AND l.categorieBillet.id = :categorieId
     """)
-    Long sumQuantityByClientAndCategorie(@Param("clientId") UUID clientId, @Param("categorieId") Long categorieId);
+    Long sumQuantityByClientAndCategorie(
+            @Param("clientId") UUID clientId,
+            @Param("categorieId") Long categorieId
+    );
 }

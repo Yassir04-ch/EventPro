@@ -28,7 +28,6 @@ public class Billet {
     @Column(nullable = false)
     private Instant issueDate;
 
-    @Column(nullable = false)
     private Instant scanDate;
 
     @Enumerated(EnumType.STRING)

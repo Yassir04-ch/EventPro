@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import ma.eventpro.dto.response.ErrorResponse;
 import ma.eventpro.exception.ConflictException;
+import ma.eventpro.exception.ReservationExpired;
 import ma.eventpro.exception.ValidationException;
 import ma.eventpro.exception.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,6 +33,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ErrorResponse> handleValidation(ValidationException ex, HttpServletRequest req) {
         return build(HttpStatus.BAD_REQUEST, ex.getMessage(), req, null);
+    }
+
+    @ExceptionHandler(ReservationExpired.class)
+    public  ResponseEntity<ErrorResponse> handerleExpiretion(ReservationExpired ex , HttpServletRequest req){
+        return build(HttpStatus.GONE , ex.getMessage() , req , null);
     }
 
     private ResponseEntity<ErrorResponse> build(HttpStatus status, String message,

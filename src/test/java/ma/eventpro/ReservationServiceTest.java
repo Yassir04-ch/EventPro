@@ -98,7 +98,7 @@ public class ReservationServiceTest {
         request.setLinesreserv(List.of(lineRequest));
         when(clientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(client));
         when(categorieBilletRepository.findById(1L)).thenReturn(Optional.of(category));
-        when(ligneReservationRepository.sumQuantityByClientAndCategorie(CLIENT_ID, 1L)).thenReturn(0);
+        when(ligneReservationRepository.sumQuantityByClientAndCategorie(CLIENT_ID, 1L)).thenReturn(0L);
         when(reservationRepository.save(any(Reservation.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(reservationMapper.toResponse(any(Reservation.class))).thenReturn(response);
         ReservationResponse result = reservationService.createReservation(request);

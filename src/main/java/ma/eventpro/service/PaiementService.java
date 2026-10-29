@@ -3,6 +3,7 @@ package ma.eventpro.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import ma.eventpro.dto.request.PaiementCreateRequest;
+import ma.eventpro.dto.response.BilletResponse;
 import ma.eventpro.dto.response.PaiementResponse;
 import ma.eventpro.entity.*;
 import ma.eventpro.entity.enums.BilletStatus;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +32,7 @@ public class PaiementService {
     private final BilletRepository billetRepository;
     private final CategorieBilletRepository categorieBilletRepository;
     private final PaiementMapper paiementMapper;
+    private final BilletMapper billetMapper;
 
     @Transactional
     public PaiementResponse createPaiement(PaiementCreateRequest request){
@@ -52,11 +55,14 @@ public class PaiementService {
         paiement.setPaymentDate(Instant.now());
         paiement.setStatus(PaymentStatus.SUCCESS);
         reservation.setStatus(ReservationStatus.CONFIRMED);
-        addBillets(reservation);
-        return paiementMapper.toResponse(paiement);
+        List<BilletResponse> billetResponses = addBillets(reservation);
+        PaiementResponse response = paiementMapper.toResponse(paiementRepository.save(paiement));
+        response.setBillets(billetResponses);
+        return response;
     }
 
-    public void addBillets(Reservation reservation){
+    public List<BilletResponse> addBillets(Reservation reservation){
+        List<BilletResponse> billetResponses = new ArrayList<>();
         List<LigneReservation> lignes = reservation.getLines();
         for(LigneReservation ligne : lignes){
             CategorieBillet categorie = categorieBilletRepository.findById(ligne.getCategorieBillet().getId())
@@ -65,11 +71,15 @@ public class PaiementService {
                 Billet billet = new Billet();
                 billet.setCode("Bil-"+UUID.randomUUID().toString());
                 billet.setIssueDate(Instant.now());
+                billet.setScanDate(Instant.now());
                 billet.setLineReservation(ligne);
                 billet.setStatus(BilletStatus.VALID);
-                billetRepository.save(billet);
+                Billet billetsave =  billetRepository.save(billet);
+                BilletResponse billetResponse = billetMapper.toResponse(billetsave);
+                billetResponses.add(billetResponse);
             }
         }
+        return billetResponses;
     }
 
 

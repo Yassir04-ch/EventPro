@@ -1,5 +1,6 @@
 package ma.eventpro.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.eventpro.dto.request.PaiementCreateRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/paiements")
 @RequiredArgsConstructor
+@Tag(name = "paiements" ,description = "Gestion des paiements")
 public class PaiementController {
 
     private final PaiementService paiementService;

@@ -1,5 +1,6 @@
 package ma.eventpro.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.eventpro.dto.request.PromotionCreateRequest;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/promotions")
 @RequiredArgsConstructor
+@Tag(name = "Promotions" , description = "Gestion des promotions")
 public class PromotionController {
 
     private final PromotionService promotionService;

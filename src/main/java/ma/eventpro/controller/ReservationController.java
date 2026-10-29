@@ -1,5 +1,6 @@
 package ma.eventpro.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.eventpro.dto.request.ReservationCreateRequest;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/reservations")
 @RequiredArgsConstructor
+@Tag(name = "Reservations" , description = "Gestion des reservations")
 public class ReservationController {
     private final ReservationService reservationService;
 

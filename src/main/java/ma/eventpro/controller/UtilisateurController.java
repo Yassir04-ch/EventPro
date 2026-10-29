@@ -1,5 +1,6 @@
 package ma.eventpro.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.eventpro.dto.request.AdministrateurCreateRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Tag(name = "Utilisateurs" , description = "Gestion des utilisateurs")
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;

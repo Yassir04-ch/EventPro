@@ -1,5 +1,6 @@
 package ma.eventpro.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import ma.eventpro.dto.request.EventCreateRequest;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/events")
 @AllArgsConstructor
+@Tag(name = "Evenements" ,description = "Gestion des evenements")
 public class EventController {
     private final EventService eventService;
 

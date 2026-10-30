@@ -10,6 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class RemboursementCreateRequest {
-    @NotNull(message = "Paiement et Oblegatoire")
+    @NotNull(message = "Paiement et obligatoire")
     private Long paiementId;
+    @NotNull(message = "Cleint et obligatoire")
+    private Long clientId;
 }

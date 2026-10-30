@@ -10,4 +10,6 @@ public interface RemboursementRepository  extends JpaRepository<Remboursement , 
     List<Remboursement> findByPaymentId(Long paymentId);
 
     List<Remboursement> findByStatus(RefundStatus status);
+
+    boolean existsByPaymentId(Long paiementId);
 }

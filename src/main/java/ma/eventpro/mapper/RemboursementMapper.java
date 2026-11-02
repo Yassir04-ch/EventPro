@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 public interface RemboursementMapper {
 
     @Mapping(source = "payment.id" , target = "paymentId")
-    @Mapping(source = "payemnt.reservation.id" , target = "reservationId")
+    @Mapping(source = "payment.reservation.id" , target = "reservationId")
     RemboursementResponse toResponse(Remboursement remboursement);
 }

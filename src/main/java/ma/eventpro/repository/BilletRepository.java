@@ -14,5 +14,5 @@ public interface BilletRepository extends JpaRepository<Billet , Long> {
 
     List<Billet> findByLineReservationReservationId(Long reservationId);
 
-    List<Billet> findByLigneReservationIn(List<LigneReservation> lignes);
+    List<Billet> findByLineReservationIn(List<LigneReservation> lignes);
 }

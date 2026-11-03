@@ -1,5 +1,6 @@
 package ma.eventpro.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import ma.eventpro.dto.request.RemboursementCreateRequest;
 import ma.eventpro.dto.response.RemboursementResponse;
@@ -10,7 +11,7 @@ import ma.eventpro.entity.enums.RefundStatus;
 import ma.eventpro.entity.enums.ReservationStatus;
 import ma.eventpro.exception.ConflictException;
 import ma.eventpro.exception.PaiementNotFound;
-import ma.eventpro.exception.ReservationNotFound;
+import ma.eventpro.exception.RemboursementNotFound;
 import ma.eventpro.exception.ValidationException;
 import ma.eventpro.mapper.RemboursementMapper;
 import ma.eventpro.repository.BilletRepository;
@@ -33,6 +34,7 @@ public class RemboursementService {
     private final PaiementRepository paiementRepository;
     private final BilletRepository billetRepository;
 
+    @Transactional
     public RemboursementResponse creatRemboursement(RemboursementCreateRequest request){
         UUID clientId = request.getClientId();
         Long paiementId = request.getPaiementId();
@@ -51,7 +53,7 @@ public class RemboursementService {
 
         valideDate(evenement);
 
-        List<Billet> billets = billetRepository.findByLigneReservationIn(lignes);
+        List<Billet> billets = billetRepository.findByLineReservationIn(lignes);
         valideBillet(billets);
         cancelBillet(billets);
 
@@ -97,6 +99,7 @@ public class RemboursementService {
         }
     }
 
+    @Transactional
     public void cancelBillet(List<Billet> billets){
         for (Billet billet : billets){
             billet.setStatus(BilletStatus.CANCELED);
@@ -110,6 +113,12 @@ public class RemboursementService {
            CategorieBillet categorieBillet = ligne.getCategorieBillet();
            categorieBillet.setPlacesReservees(categorieBillet.getPlacesReservees() - ligne.getQuantity());
         }
+    }
+
+    @Transactional
+    public RemboursementResponse getById(Long id) {
+        return remboursementMapper.toResponse(remboursementRepository.findById(id)
+                .orElseThrow(() -> new RemboursementNotFound("Remboursement not found")));
     }
 
 }

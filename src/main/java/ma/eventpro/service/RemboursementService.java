@@ -60,9 +60,11 @@ public class RemboursementService {
         returnPlaces(reservation);
         Remboursement remboursement = new Remboursement();
         remboursement.setPayment(paiement);
-        remboursement.setStatus(RefundStatus.PENDING);
+        remboursement.setStatus(RefundStatus.APPROVED);
         remboursement.setAmount(paiement.getAmount());
         remboursement.setRequestDate(Instant.now());
+
+        reservation.setStatus(ReservationStatus.REFUNDED);
         return  remboursementMapper.toResponse(remboursementRepository.save(remboursement));
     }
 
@@ -113,6 +115,10 @@ public class RemboursementService {
            CategorieBillet categorieBillet = ligne.getCategorieBillet();
            categorieBillet.setPlacesReservees(categorieBillet.getPlacesReservees() - ligne.getQuantity());
         }
+        Promotion promotion = reservation.getPromotion();
+        if(promotion != null){
+            promotion.setUsageCount(promotion.getUsageCount() - 1);
+        }
     }
 
     @Transactional
@@ -120,5 +126,6 @@ public class RemboursementService {
         return remboursementMapper.toResponse(remboursementRepository.findById(id)
                 .orElseThrow(() -> new RemboursementNotFound("Remboursement not found")));
     }
+
 
 }

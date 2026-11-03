@@ -7,7 +7,9 @@ import ma.eventpro.dto.request.EventCreateRequest;
 import ma.eventpro.dto.response.EvenementResponse;
 import ma.eventpro.entity.Evenement;
 import ma.eventpro.entity.Organisateur;
+import ma.eventpro.entity.Reservation;
 import ma.eventpro.entity.enums.EventStatus;
+import ma.eventpro.entity.enums.ReservationStatus;
 import ma.eventpro.exception.ConflictException;
 import ma.eventpro.exception.EventNotFound;
 import ma.eventpro.exception.OrganisateurNotFound;
@@ -16,13 +18,11 @@ import ma.eventpro.mapper.EvenementMapper;
 import ma.eventpro.repository.CategorieBilletRepository;
 import ma.eventpro.repository.EvenementRepostory;
 import ma.eventpro.repository.OrganisateurRepository;
+import ma.eventpro.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,8 @@ public class EventService {
     private final EvenementRepostory evenementRepostory;
     private final OrganisateurRepository organisateurRepository;
     private final EvenementMapper evenementMapper;
+    private final ReservationRepository reservationRepository;
+    private final RemboursementService remboursementService;
 
     @Transactional
     public EvenementResponse createEvent(EventCreateRequest request){
@@ -125,5 +127,25 @@ public class EventService {
             }
             categorie.setName(name);
         }
+    }
+
+    @Transactional
+    public void annulerEvent(Long id , UUID organisateurId){
+        Evenement evenement = evenementRepostory.findById(id)
+                .orElseThrow(()->new EventNotFound("event not found"));
+        if(!evenement.getOrganisateur().getId().equals(organisateurId)){
+            throw new ValidationException("Cet événement n'appartient pas à cet organisateur");
+        }
+        if (evenement.getStatus() == EventStatus.CANCELED) {
+            throw new ValidationException("Cet événement est déjà annulé");
+        }
+        if (evenement.getStatus() == EventStatus.COMPLETED) {
+            throw new ValidationException("Cet événement est Terminée");
+        }
+        List<Reservation> reservations = reservationRepository.findByEventIdAndStatus(evenement.getId() , ReservationStatus.CONFIRMED);
+        for(Reservation reservation : reservations){
+            remboursementService.returnPlaces(reservation);
+        }
+        evenement.setStatus(EventStatus.CANCELED);
     }
 }

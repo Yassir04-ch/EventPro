@@ -4,13 +4,17 @@ import ma.eventpro.dto.request.EventCreateRequest;
 import ma.eventpro.dto.response.EvenementResponse;
 import ma.eventpro.entity.Evenement;
 import ma.eventpro.entity.Organisateur;
+import ma.eventpro.entity.Reservation;
 import ma.eventpro.entity.enums.EventStatus;
+import ma.eventpro.entity.enums.ReservationStatus;
 import ma.eventpro.exception.EventNotFound;
 import ma.eventpro.exception.OrganisateurNotFound;
 import ma.eventpro.mapper.EvenementMapper;
 import ma.eventpro.repository.EvenementRepostory;
 import ma.eventpro.repository.OrganisateurRepository;
+import ma.eventpro.repository.ReservationRepository;
 import ma.eventpro.service.EventService;
+import ma.eventpro.service.RemboursementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,18 +41,31 @@ public class EventServiceTest {
     @Mock
     private EvenementMapper evenementMapper;
 
+    @Mock
+    private RemboursementService remboursementService;
+
+    @Mock
+    private ReservationRepository reservationRepository;
     @InjectMocks
     private EventService eventService;
 
     private Organisateur organisateur;
     private Evenement evenement;
     private EvenementResponse response;
+    private Reservation reservation;
 
     @BeforeEach
     void setUp() {
+        UUID organisateurId = UUID.randomUUID();
         organisateur = new Organisateur();
+        organisateur.setId(organisateurId);
         evenement = new Evenement();
         response = new EvenementResponse();
+        reservation = new Reservation();
+        evenement.setId(1L);
+        reservation.setStatus(ReservationStatus.CONFIRMED);
+        evenement.setOrganisateur(organisateur);
+        evenement.setStatus(EventStatus.PUBLISHED);
     }
 
     @Test
@@ -152,5 +169,16 @@ public class EventServiceTest {
         assertThrows(EventNotFound.class, () -> eventService.getById(99L));
         verify(evenementRepostory).findById(99L);
         verifyNoInteractions(evenementMapper);
+    }
+
+    @Test
+    void annulerEvent(){
+        when(evenementRepostory.findById(1L)).thenReturn(Optional.of(evenement));
+        when(reservationRepository.findByEventIdAndStatus(1L , ReservationStatus.CONFIRMED))
+                .thenReturn(List.of(reservation));
+        eventService.annulerEvent(1L ,organisateur.getId());
+        assertEquals(EventStatus.CANCELED, evenement.getStatus());
+        verify(evenementRepostory).findById(1L);
+        verify(reservationRepository).findByEventIdAndStatus(1L, ReservationStatus.CONFIRMED);
     }
 }

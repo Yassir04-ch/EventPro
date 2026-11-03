@@ -220,7 +220,7 @@ public class RemboursementServiceTest {
 
         when(remboursementRepository.existsByPaymentId(paiementId)).thenReturn(false);
 
-        when(billetRepository.findByLigneReservationIn(reservation.getLines())).thenReturn(List.of(billet));
+        when(billetRepository.findByLineReservationIn(reservation.getLines())).thenReturn(List.of(billet));
 
         assertThrows(ValidationException.class,
                 () -> remboursementService.creatRemboursement(request)

@@ -1,10 +1,10 @@
 package ma.eventpro.mapper;
 
 import ma.eventpro.dto.request.EventCreateRequest;
+import ma.eventpro.dto.request.EventUpdateRequest;
 import ma.eventpro.dto.response.EvenementResponse;
 import ma.eventpro.entity.Evenement;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface EvenementMapper {
@@ -16,4 +16,6 @@ public interface EvenementMapper {
 
     @Mapping(source = "organisateur.id", target = "organisateurId")
     EvenementResponse toResponse(Evenement evenement);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntity(EventUpdateRequest request , @MappingTarget Evenement evenement);
 }

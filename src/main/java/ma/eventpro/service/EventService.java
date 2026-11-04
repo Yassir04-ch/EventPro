@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import ma.eventpro.dto.request.CategorieBilletRequest;
 import ma.eventpro.dto.request.EventCreateRequest;
+import ma.eventpro.dto.request.EventUpdateRequest;
 import ma.eventpro.dto.response.EvenementResponse;
 import ma.eventpro.entity.Evenement;
 import ma.eventpro.entity.Organisateur;
@@ -147,5 +148,19 @@ public class EventService {
             remboursementService.returnPlaces(reservation);
         }
         evenement.setStatus(EventStatus.CANCELED);
+    }
+
+    @Transactional
+    public EvenementResponse updateEvent(Long id,UUID organisateurId , EventUpdateRequest request){
+        Evenement evenement = evenementRepostory.findById(id)
+                .orElseThrow(()->new EventNotFound("evenement not found"));
+        if(!evenement.getOrganisateur().getId().equals(organisateurId)){
+            throw new ValidationException("Cet événement n'appartient pas à ce organisateur");
+        }
+        if (evenement.getStatus() != EventStatus.DRAFT) {
+            throw new ValidationException("Seuls les événements en brouillon peuvent étre modifiés");
+        }
+        evenementMapper.updateEntity(request , evenement);
+        return evenementMapper.toResponse(evenement);
     }
 }

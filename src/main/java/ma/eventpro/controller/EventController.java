@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import ma.eventpro.dto.request.EventCreateRequest;
+import ma.eventpro.dto.request.EventUpdateRequest;
 import ma.eventpro.dto.response.EvenementResponse;
 import ma.eventpro.service.EventService;
 import org.springframework.http.HttpStatus;
@@ -50,5 +51,10 @@ public class EventController {
     public ResponseEntity<Void> annulerEvent(@PathVariable Long id , @RequestParam UUID organisateurId){
         eventService.annulerEvent(id, organisateurId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/Modifier")
+    public ResponseEntity<EvenementResponse> updateEvent(@PathVariable Long id , @RequestParam UUID organisateurId , @RequestBody EventUpdateRequest request){
+        return ResponseEntity.ok(eventService.updateEvent(id, organisateurId , request));
     }
 }

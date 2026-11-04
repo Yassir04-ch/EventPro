@@ -1,17 +1,10 @@
 
 package ma.eventpro.mapper;
 
-import ma.eventpro.dto.request.AdministrateurCreateRequest;
-import ma.eventpro.dto.request.AgentControleCreateRequest;
-import ma.eventpro.dto.request.ClientCreateRequest;
-import ma.eventpro.dto.request.OrganisateurCreateRequest;
+import ma.eventpro.dto.request.*;
 import ma.eventpro.dto.response.UtilisateurResponse;
-import ma.eventpro.entity.Administrateur;
-import ma.eventpro.entity.AgentControle;
-import ma.eventpro.entity.Client;
-import ma.eventpro.entity.Organisateur;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import ma.eventpro.entity.*;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface UtilisateurMapper {
@@ -58,4 +51,8 @@ public interface UtilisateurMapper {
     @Mapping(target = "phone", ignore = true)
     @Mapping(target = "organisationName", ignore = true)
     UtilisateurResponse toAgentControleResponce(AgentControle agentControle);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    void updateUtilisateur(UtilisateurUpdateRequest request, @MappingTarget User utilisateur);
 }

@@ -3,18 +3,15 @@ package ma.eventpro.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import ma.eventpro.dto.request.AdministrateurCreateRequest;
-import ma.eventpro.dto.request.AgentControleCreateRequest;
-import ma.eventpro.dto.request.ClientCreateRequest;
-import ma.eventpro.dto.request.OrganisateurCreateRequest;
+import ma.eventpro.dto.request.*;
 import ma.eventpro.dto.response.UtilisateurResponse;
 import ma.eventpro.service.UtilisateurService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,26 +22,32 @@ public class UtilisateurController {
     private final UtilisateurService utilisateurService;
 
     @PostMapping("/clients")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UtilisateurResponse createClient(@Valid @RequestBody ClientCreateRequest request) {
-        return utilisateurService.createClient(request);
+    public ResponseEntity<UtilisateurResponse> createClient(@Valid @RequestBody ClientCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(utilisateurService.createClient(request));
     }
 
     @PostMapping("/organisateurs")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UtilisateurResponse createOrganisateur(@Valid @RequestBody OrganisateurCreateRequest request) {
-        return utilisateurService.createOrganisateur(request);
+    public ResponseEntity<UtilisateurResponse> createOrganisateur(@Valid @RequestBody OrganisateurCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(utilisateurService.createOrganisateur(request));
     }
 
     @PostMapping("/admins")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UtilisateurResponse createAdministrateur(@Valid @RequestBody AdministrateurCreateRequest request) {
-        return utilisateurService.createAdministrateur(request);
+    public ResponseEntity<UtilisateurResponse> createAdministrateur(@Valid @RequestBody AdministrateurCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(utilisateurService.createAdministrateur(request)) ;
     }
 
     @PostMapping("/agents")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UtilisateurResponse createAgentControle(@Valid @RequestBody AgentControleCreateRequest request) {
-        return utilisateurService.createAgentControle(request);
+    public ResponseEntity<UtilisateurResponse> createAgentControle(@Valid @RequestBody AgentControleCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(utilisateurService.createAgentControle(request));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UtilisateurResponse> getProfile(@PathVariable UUID id){
+        return ResponseEntity.ok(utilisateurService.getById(id));
+    }
+
+    @PutMapping("/{id}/profile")
+    public ResponseEntity<UtilisateurResponse> updateProfile(@PathVariable UUID id , @Valid @RequestBody UtilisateurUpdateRequest request){
+        return ResponseEntity.ok(utilisateurService.updateProfile(id,request));
     }
 }

@@ -7,9 +7,11 @@ import ma.eventpro.dto.request.EventCreateRequest;
 import ma.eventpro.dto.response.EvenementResponse;
 import ma.eventpro.service.EventService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/events")
@@ -42,5 +44,11 @@ public class EventController {
     @GetMapping
     public List<EvenementResponse> getPublishedEvents() {
         return eventService.getPublishedEvents();
+    }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<Void> annulerEvent(@PathVariable Long id , @RequestParam UUID organisateurId){
+        eventService.annulerEvent(id, organisateurId);
+        return ResponseEntity.noContent().build();
     }
 }

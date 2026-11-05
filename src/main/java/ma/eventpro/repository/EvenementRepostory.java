@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface EvenementRepostory extends JpaRepository<Evenement , Long> {
     List<Evenement> findByStatus(EventStatus status);
-    List<Evenement> findByOrganisateurId(Long organisateurId);
+    List<Evenement> findByOrganisateurId(UUID organisateurId);
 }

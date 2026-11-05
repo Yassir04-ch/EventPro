@@ -9,11 +9,12 @@ import org.springframework.data.repository.query.Param;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<Reservation , Long> {
     Optional<Reservation> findByReference(String reference);
 
-    List<Reservation> findByClientId(Long clientId);
+    List<Reservation> findByClientId(UUID clientId);
 
     List<Reservation> findByStatusAndExpirationDateLessThanEqual(ReservationStatus status, Instant now);
 

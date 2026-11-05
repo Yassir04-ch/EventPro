@@ -178,5 +178,9 @@ public class ReservationService {
         }
     }
 
-
+    @Transactional
+    public List<ReservationResponse> getByClientId(UUID clientId){
+        return reservationRepository.findByClientId(clientId).stream()
+                .map(reservationMapper::toResponse).toList();
+    }
 }

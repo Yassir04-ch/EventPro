@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/reservations")
 @RequiredArgsConstructor
@@ -30,5 +33,10 @@ public class ReservationController {
     @PutMapping("/{id}")
     public ResponseEntity<ReservationResponse> cancelReservation(@PathVariable Long id){
         return ResponseEntity.ok(reservationService.cancelReservation(id));
+    }
+
+    @GetMapping("/{clientId}/MyReservations")
+    public ResponseEntity<List<ReservationResponse>> getMyReservations(@PathVariable UUID clientId){
+        return ResponseEntity.ok(reservationService.getByClientId(clientId));
     }
 }

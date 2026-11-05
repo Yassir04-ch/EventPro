@@ -22,29 +22,28 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public EvenementResponse createEvent(@Valid @RequestBody EventCreateRequest request){
-        return eventService.createEvent(request);
+    public ResponseEntity<EvenementResponse> createEvent(@Valid @RequestBody EventCreateRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(eventService.createEvent(request));
     }
 
     @PutMapping("/{id}/publish")
-    public EvenementResponse publishEvent(@PathVariable Long id){
-        return eventService.publishEvent(id);
+    public ResponseEntity<EvenementResponse> publishEvent(@PathVariable Long id){
+        return ResponseEntity.ok(eventService.publishEvent(id));
     }
 
     @PutMapping("/{id}/cancel")
-    public EvenementResponse cancelEvent(@PathVariable Long id){
-        return eventService.cancelEvent(id);
+    public ResponseEntity<EvenementResponse> cancelEvent(@PathVariable Long id){
+        return ResponseEntity.ok(eventService.cancelEvent(id));
     }
 
     @GetMapping("/{id}")
-    public EvenementResponse getEvent(@PathVariable Long id){
-        return eventService.getById(id);
+    public ResponseEntity<EvenementResponse> getEvent(@PathVariable Long id){
+        return ResponseEntity.ok(eventService.getById(id));
     }
 
     @GetMapping
-    public List<EvenementResponse> getPublishedEvents() {
-        return eventService.getPublishedEvents();
+    public ResponseEntity<List<EvenementResponse>> getPublishedEvents() {
+        return ResponseEntity.ok(eventService.getPublishedEvents());
     }
 
     @PatchMapping("/{id}/cancel")
@@ -56,5 +55,10 @@ public class EventController {
     @PutMapping("/{id}/Modifier")
     public ResponseEntity<EvenementResponse> updateEvent(@PathVariable Long id , @RequestParam UUID organisateurId , @RequestBody EventUpdateRequest request){
         return ResponseEntity.ok(eventService.updateEvent(id, organisateurId , request));
+    }
+
+    @GetMapping("/{id}/MyEvent")
+    public ResponseEntity<List<EvenementResponse>> getMyEvent(@PathVariable UUID id){
+        return ResponseEntity.ok(eventService.getMyEvent(id));
     }
 }

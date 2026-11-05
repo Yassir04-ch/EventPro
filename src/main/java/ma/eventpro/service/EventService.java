@@ -163,4 +163,9 @@ public class EventService {
         evenementMapper.updateEntity(request , evenement);
         return evenementMapper.toResponse(evenement);
     }
+    @Transactional
+    public List<EvenementResponse> getMyEvent(UUID organisateurId){
+        return evenementRepostory.findByOrganisateurId(organisateurId).stream()
+                .map(evenementMapper::toResponse).toList();
+    }
 }
